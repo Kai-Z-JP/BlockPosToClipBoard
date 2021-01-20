@@ -4,6 +4,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -29,6 +30,11 @@ public class BPTCB extends Item {
             GuiScreen.setClipboardString(pos);
         }
         return true;
+    }
+
+    @Override
+    public void registerIcons(IIconRegister register) {
+        this.itemIcon = register.registerIcon(BPTCB.MODID + ":" + "itembptcb");
     }
 
     @Mod.EventHandler
