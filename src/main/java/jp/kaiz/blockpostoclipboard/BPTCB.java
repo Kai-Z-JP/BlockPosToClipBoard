@@ -18,16 +18,28 @@ import net.minecraft.world.World;
 public class BPTCB extends Item {
     public final static String MODID = "bptcb";
     public final static String VERSION = "1.0";
+    private boolean commaMode;
 
     public BPTCB() {
         setCreativeTab(CreativeTabs.tabTools);
         setUnlocalizedName(BPTCB.MODID + ":" + "itemBPTCB");
     }
 
+    @SideOnly(Side.CLIENT)
+    @Override
+    public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer player) {
+        if (world.isRemote) {
+            this.commaMode ^= true;
+            player.addChatMessage(new ChatComponentText(String.format("CommaMode=%s", this.commaMode)));
+        }
+        return itemstack;
+    }
+
+    @SideOnly(Side.CLIENT)
     @Override
     public boolean onItemUse(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int side, float p, float q, float r) {
         if (world.isRemote) {
-            String pos = String.format("%s, %s, %s", x, y, z);
+            String pos = String.format(this.commaMode ? "%s, %s, %s" : "%s %s %s", x, y, z);
             player.addChatMessage(new ChatComponentText(String.format("Copied! (%s)", pos)));
             GuiScreen.setClipboardString(pos);
         }
